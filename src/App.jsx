@@ -3,29 +3,42 @@ import SideBar from "./components/layout/SideBar";
 import { useState } from "react";
 import Backdrop from "./components/layout/Backdrop";
 import { Outlet } from "react-router-dom";
-import './App.css';
+import "./App.css";
 
 export default function App() {
-	const [isOpen, setIsOpen] = useState(false);
+	// const [isOpen, setIsOpen] = useState(false);
 
-	function openDrawerHandler() {
-		setIsOpen(true);
-	}
+	// function openDrawerHandler() {
+	// 	setIsOpen(true);
+	// }
 
-	function closeDrawerHandler() {
-		setIsOpen(false);
-	}
+	// function closeDrawerHandler() {
+	// 	setIsOpen(false);
+	// }
 	return (
-		<div>
-			<h1>Hello, React 18! - App.jsx is rendered as the parent rotue</h1>
-			{isOpen && <Backdrop onClick={closeDrawerHandler} />}
-			<NavBar show={isOpen} onClick={closeDrawerHandler}>
-				SideBar
-			</NavBar>
-			<div>
-				<SideBar />
-				<Outlet />
+		<div className="outer-wrapper">
+			{/* Centered container (60% of viewport width) */}
+			<div className="centered-container">
+				{/* Header Section */}
+				<header className="header">
+					<h1>My Header</h1>
+				</header>
+
+				{/* Main content row: sidebar on the left, feed on the right */}
+				<div className="main-content">
+					<aside className="sidebar">
+						<h2>Sidebar</h2>
+						<p>Sidebar content goes here.</p>
+					</aside>
+
+					<main className="feed">
+						<h2>Feed Area</h2>
+						<p>This is where the feed will go.</p>
+					</main>
+				</div>
+				<footer className="footer"><h1>My Footer</h1></footer>
 			</div>
 		</div>
 	);
 }
+

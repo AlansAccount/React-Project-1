@@ -1,32 +1,136 @@
-* {
-	box-sizing: border-box;
+/* 
+  1) Make html/body fill the entire browser window
+  2) Remove default margins
+*/
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%; /* ensures body can span full height */
+	font-family: sans-serif; /* optional default font */
 }
 
-/* body {
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* 
+	OUTER-WRAPPER
+	- Takes up the full screen height (min-height: 100vh or height: 100%)
+	- Column layout: Header at the top, main content in the middle, footer (optional) at bottom.
+	- Light background color for your "background area."
+  */
+.outer-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* ensures full vertical fill */
+	background-color: #f8dfdf; /* change this to affect the BG color */
+	width: 100%; /* let it span entire screen width */
+	align-items: center; /* horizontally center the container content */
+}
+/* 
+  .centered-container
+  - This is where we place header, main-content, and footer in a column layout.
+  - flex: 1 so it expands to fill the remaining vertical space of .outer-wrapper.
+  - We also limit the width to 80% of the screen, with min and max widths for responsiveness.
+*/
 
-} */
+.centered-container {
+	display: flex; /* flex container for vertical stacking of header, main, footer */
+	flex-direction: column; /* stack them vertically */
+	flex: 1; /*take all remaining vertical space */
+	width: 70%; /* ~80% of viewport width, tweak as needed */
+	max-width: 1200px; /* largest it can get on very wide screens */
+	min-width: 600px; /* smallest it can get before horizontal scrollbar appears (optional) */
+}
 
-#main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 3rem 15%;
+/*
+  HEADER
+  - White background, rounded corners, box-shadow
+  - We no longer need a separate width here if we want it 
+    to match the parent's 80% automatically.
+*/
+.header {
+	text-align: center;
+	background-color: #ffffff; /* change this color to style header BG */
+	border-radius: 10px; /* adjust corner rounding */
+	margin-top: 20px; /* space from top edge of .outer-wrapper */
+	padding: 20px; /* internal padding */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* small shadow (optional) */
+}
+
+/* 
+	MAIN-CONTENT
+	- This is the row holding sidebar + feed
+	- We want it to stretch to fill the remaining space 
+	  so the feed extends down.
+  */
+
+.main-content {
+	display: flex;
+	flex: 1;
+	align-items: stretch; /* let children stretch in height */
+	gap: 10px;
+	margin: 10px 0; /* small gap from header + any gap to footer */
+
+	/* We rely on .centered-container for the width (70%). 
+	   If you want a separate BG color behind sidebar+feed,
+	   you can do background-color: #ffefef; here */
+}
+
+/* 
+  SIDEBAR
+  - We don't want it to stretch fully, so:
+    1) either align-self: flex-start, or
+    2) give it a fixed/min height to cap it.
+*/
+.sidebar {
+	/* If you just want it to wrap its content (not stretch vertically): */
+	align-self: flex-start;       /* override 'stretch' from .main-content */
+	
+	/* Alternatively, if you want a fixed height:
+	   height: 300px;  (then remove align-self: flex-start)
+	   or min-height: 200px;
+	*/
+  
+	flex: 0 0 auto;               /* keeps a fixed width if you specify width below */
+	width: 100px;                 /* your chosen sidebar width */
+	background-color: #ffffff;    
+	border-radius: 10px;          
+	padding: 0px 20px 20px 20px;  
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
   }
+  
 
-  #main-title {
-    display: flex;
-    align-items: center;
-  }
+/* 
+	FEED
+	- Takes the remaining horizontal space (flex:1).
+	- White background, extends vertically to fill container.
+  */
+.feed {
+	text-align: center; /* center feed content */
+	flex: 1; /* feed expands to fill leftover space */
+	background-color: #ffffff; /* feed background color */
+	border-radius: 10px; /* adjust corner rounding here */
+	padding: 0px 20px 20px 20px; /* internal spacing */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* small shadow (optional) */
 
-  h1 {
-    text-align: center;
-    text-transform: uppercase;
-    color: #b91f1a;
-    text-shadow: 0 0 4px rgba(35, 34, 34, 0.4);
-    font-size: 2.5rem;
-    margin: 0;
-  }
+	/* 
+	  If you want the feed to extend to the bottom even more explicitly,
+	  you can ensure min-height: 100% or rely on the .main-content flex:1.
+	  .main-content is already stretching to fill vertical space, 
+	  so feed will fill it as well.
+	*/
+}
+
+/* 
+	FOOTER (optional) 
+	- Uncomment in App.jsx if you want a footer.
+	- flex: 0 ensures it doesn't expand. 
+	- You can style similarly to the header or differently.
+  */
+
+.footer {
+	text-align: center	;
+	background-color: #fff;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
