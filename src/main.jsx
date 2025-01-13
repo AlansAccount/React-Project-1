@@ -23,14 +23,16 @@ const router = createBrowserRouter([
 			{
 				path: "/settings",
 				element: <SettingsPage />,
+				children: [
+					{ path: "/settings/account", element: <AccountSettingsForm /> },
+				],
 			},
-			{ path: "/settings/account", element: <AccountSettingsForm /> },
 		],
 	},
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  }
+	{
+		path: "/profile",
+		element: <ProfilePage />,
+	},
 ]);
 
 createRoot(document.getElementById("root")).render(

@@ -1,44 +1,43 @@
 import NavBar from "./components/layout/NavBar";
-import SideBar from "./components/layout/SideBar";
-import { useState } from "react";
-import Backdrop from "./components/layout/Backdrop";
 import { Outlet } from "react-router-dom";
 import "./App.css";
+import AuthFormPage from "./pages/AuthFormPage";
+import { useState } from "react";
 
 export default function App() {
-	// const [isOpen, setIsOpen] = useState(false);
+	const [isloggedIn, setIsLoggedIn] = useState(false);
 
-	// function openDrawerHandler() {
-	// 	setIsOpen(true);
-	// }
+	function handleLogin() {
+		setIsLoggedIn(!isloggedIn);
+	}
 
-	// function closeDrawerHandler() {
-	// 	setIsOpen(false);
-	// }
 	return (
 		<div className="outer-wrapper">
-			{/* Centered container (60% of viewport width) */}
+			<header className="header">
+				<h1>My Header</h1>
+				<p>
+					Keep in Mind: 1. This is 55% page width, 2. Its smaller when using
+					DevTools.
+				</p>
+				{isloggedIn ? <NavBar /> : null}
+			</header>
 			<div className="centered-container">
-				{/* Header Section */}
-				<header className="header">
-					<h1>My Header</h1>
-				</header>
-
-				{/* Main content row: sidebar on the left, feed on the right */}
 				<div className="main-content">
-					<aside className="sidebar">
-						<h2>Sidebar</h2>
-						<p>Sidebar content goes here.</p>
-					</aside>
-
-					<main className="feed">
-						<h2>Feed Area</h2>
-						<p>This is where the feed will go.</p>
-					</main>
+					{!isloggedIn ? <AuthFormPage onLogin={handleLogin} /> : <Outlet />}
 				</div>
-				<footer className="footer"><h1>My Footer</h1></footer>
+
+				<footer className="footer">
+					<h1>My Footer</h1>
+					<h6 style={{ textAlign: "center", color: "grey" }}>
+						© My First React Frontend Project.
+					</h6>
+				</footer>
 			</div>
 		</div>
 	);
 }
 
+// {!isAuthenticated ? <LoginPage /> : <Outlet />}
+// <button onClick={tempAuthentication}>
+// 	Login
+// </button>

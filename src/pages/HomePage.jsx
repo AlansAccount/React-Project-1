@@ -1,9 +1,18 @@
+import SideBar from "../components/layout/SideBar";
+
 export default function HomePage() {
 	return (
-		<div>
-			<p>The HomePage.jsx file is rendered correctly</p>
-			<p>Now the homepage link is in the NavBar</p>
-            <p>This is where the <strong>Feed</strong> will be shown.</p>
-		</div>
+		<>
+			<aside className="sidebar">
+				<h2>Sidebar</h2>
+				<SideBar />
+			</aside>
+
+			<main className="feed">
+				<h2>Feed Area</h2>
+				<p>This is where the feed will go.</p>
+				This comes from the HomePage() function
+			</main>
+		</>
 	);
 }

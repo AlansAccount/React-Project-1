@@ -1,0 +1,61 @@
+/* Base button styles for consistency */
+.buttonBase {
+	font-family: Arial, sans-serif;
+	font-size: 1rem;
+	padding: 10px 20px;
+	border-radius: 5px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Navigation Button */
+.buttonNav {
+	background-color: #007bff; /* Blue */
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.buttonNav:hover {
+	background-color: #0056b3; /* Darker blue */
+	transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* Sidebar Button */
+.buttonSide {
+	background-color: #f8f9fa; /* Light gray */
+	color: #343a40; /* Dark text */
+	font-size: 0.9rem;
+}
+
+.buttonSide:hover {
+	background-color: #e9ecef; /* Slightly darker gray */
+	color: #495057; /* Slightly darker text */
+	transform: translateY(-2px); /* Subtle lift */
+}
+
+/* Primary Action Button */
+.buttonPrimary {
+	background-color: #28a745; /* Green */
+	color: white;
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.buttonPrimary:hover {
+	background-color: #218838; /* Darker green */
+	transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Secondary Action Button */
+.buttonSecondary {
+	background-color: #6c757d; /* Gray */
+	color: white;
+	font-size: 1rem;
+}
+
+.buttonSecondary:hover {
+	background-color: #5a6268; /* Darker gray */
+	transform: scale(1.05); /* Slight zoom effect */
+}

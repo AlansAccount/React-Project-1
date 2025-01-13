@@ -35,7 +35,7 @@ body {
 	display: flex; /* flex container for vertical stacking of header, main, footer */
 	flex-direction: column; /* stack them vertically */
 	flex: 1; /*take all remaining vertical space */
-	width: 70%; /* ~80% of viewport width, tweak as needed */
+	width: 55%; /* ~80% of viewport width, tweak as needed */
 	max-width: 1200px; /* largest it can get on very wide screens */
 	min-width: 600px; /* smallest it can get before horizontal scrollbar appears (optional) */
 }
