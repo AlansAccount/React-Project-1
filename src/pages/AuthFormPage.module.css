@@ -12,7 +12,7 @@
     align-items: center;      /* horizontally center the form, heading, etc. */
     justify-content: center;  /* vertically center if you want it in the middle */
     flex: 1;                  /* let it expand to fill leftover space in .centered-container */
-    padding: 2rem;            /* some internal spacing around the edges */
+    padding: 0rem;            /* some internal spacing around the edges */
     text-align: center;       /* center headings, messages, etc. */
   }
   
@@ -37,7 +37,7 @@
     max-width: 400px;         /* ensures it doesn’t get too wide */
     background-color: #ffffff;
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
   
