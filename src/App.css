@@ -20,8 +20,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh; /* ensures full vertical fill */
-	background-color: #f8dfdf; /* change this to affect the BG color */
-	width: 100%; /* let it span entire screen width */
+	background-color: #f8c2c6; /* change this to affect the BG color */
+	min-width: 100%; /* let it span entire screen width */
 	align-items: center; /* horizontally center the container content */
 }
 /* 
@@ -48,11 +48,19 @@ body {
 */
 .header {
 	text-align: center;
+	height: 7vw;
 	background-color: #ffffff; /* change this color to style header BG */
-	border-radius: 10px; /* adjust corner rounding */
-	margin-top: 20px; /* space from top edge of .outer-wrapper */
-	padding: 20px; /* internal padding */
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* small shadow (optional) */
+	border-bottom-right-radius: 10px; /* adjust ONLY the BOTTM-RIGHT corner rounding */
+	border-bottom-left-radius: 10px; /* adjust ONLY the BOTTOM-LEFT corner rounding */
+	padding: 20px; /* internal padding */
+	box-sizing: border-box; /* ensure padding is included in the height calculation */
+	min-height: 110px; /* set a minimum height to account for the NavBar */
+}
+
+.header h4 {
+	margin-top: 7px;
+	margin-bottom: 12px;;
 }
 
 /* 
@@ -82,21 +90,21 @@ body {
 */
 .sidebar {
 	/* If you just want it to wrap its content (not stretch vertically): */
-	align-self: flex-start;       /* override 'stretch' from .main-content */
-	
+	align-self: flex-start; /* override 'stretch' from .main-content */
+
 	/* Alternatively, if you want a fixed height:
 	   height: 300px;  (then remove align-self: flex-start)
 	   or min-height: 200px;
 	*/
-  
-	flex: 0 0 auto;               /* keeps a fixed width if you specify width below */
-	width: 100px;                 /* your chosen sidebar width */
-	background-color: #ffffff;    
-	border-radius: 10px;          
-	padding: 0px 20px 20px 20px;  
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
-  }
-  
+
+	flex: 0 0 auto; /* keeps a fixed width if you specify width below */
+	width: 100px; /* your chosen sidebar width */
+	height: 300px; /* optional fixed height */
+	background-color: #ffffff;
+	border-radius: 10px;
+	padding: 0px 20px 20px 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
 
 /* 
 	FEED
@@ -127,10 +135,18 @@ body {
   */
 
 .footer {
-	text-align: center	;
+	text-align: center;
+	height: 7vw;
 	background-color: #fff;
-	border-radius: 10px;
-	margin-bottom: 10px;
-	padding: 20px;
+	border-top-right-radius: 10px; /* adjust ONLY the TOP-RIGHT corner rounding */
+	border-top-left-radius: 10px; /* adjust ONLY the TOP-LEFT corner rounding */
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer h4 {
+    margin-bottom: 10px; /* Adjust the bottom margin of the h4 element */
+}
+
+.footer p {
+    margin-top: 10px; /* Adjust the top margin of the p element */
 }

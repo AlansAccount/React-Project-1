@@ -1,0 +1,27 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+    width: 100%;
+}
+
+.navbar button {
+    flex-grow: 1; /* Make each button take up an equal amount of space */
+    padding: 1.5% 10%;
+    margin: 0 0px;
+    border: 1px solid #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0%;
+    box-sizing: border-box; /* Ensure padding is included in the width calculation */
+    text-align: center; /* Center the text within the button */
+}
+
+.navbar button:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.navbar button:last-child {
+    border-radius: 0 10px 10px 0;
+}
