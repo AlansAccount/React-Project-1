@@ -1,13 +1,16 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+
 import HomePage from "./pages/HomePage";
 import App from "./App";
 import SettingsPage from "./components/settings/SettingsPage";
 import AccountSettingsForm from "./components/settings/AccountSettingsForm";
 import ProfilePage from "./components/profile/ProfilePage";
+import AuthFormPage from "./pages/AuthForms/AuthFormPage";
 
 // Here I want to add routing with createBrowserRouter and have the routes nested here.
 
@@ -17,26 +20,30 @@ const router = createBrowserRouter([
 		element: <App />,
 		children: [
 			{
-				path: "/",
+				index: true,
 				element: <HomePage />,
+			},
+			{
+				path: "/profile",
+				element: <ProfilePage />,
 			},
 			{
 				path: "/settings",
 				element: <SettingsPage />,
 				children: [
-					{ path: "/settings/account", element: <AccountSettingsForm /> },
+					{ path: "account", element: <AccountSettingsForm /> },
 				],
 			},
 		],
 	},
 	{
-		path: "/profile",
-		element: <ProfilePage />,
+		path: "/Auth",
+		element: <AuthFormPage />,
 	},
 ]);
 
 createRoot(document.getElementById("root")).render(
-	<StrictMode>
+	<AuthProvider>
 		<RouterProvider router={router} />
-	</StrictMode>
+	</AuthProvider>
 );

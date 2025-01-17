@@ -6,93 +6,92 @@
   and justify-content: center to center them horizontally within the header's max width.
 */
 .profileHeader {
-    display: flex;              /* Put image + text row-wise */
-    align-items: center;        /* Vertically center them in this container */
-    justify-content: center;    /* Center the image+text horizontally within .profileHeader */
-    padding: 1rem;              /* Spacing around the entire header area */
-    margin: 0 auto;             /* Auto left/right margins so this container is centered on the page */
-    width: 100%;                /* Fill its parent container’s width */
-    max-width: 800px;           /* Prevent it from becoming too wide on large screens */
-    /* background-color: #eef;  <-- Uncomment if you want to see the bounding box for debugging */
-  }
-  
-  /* 
+	display: flex; /* Put image + text row-wise */
+	align-items: center; /* Vertically center them in this container */
+	justify-content: center; /* Center the image+text horizontally within .profileHeader */
+	padding: 1rem; /* Spacing around the entire header area */
+	margin: 0 auto; /* Auto left/right margins so this container is centered on the page */
+	width: 100%; /* Fill its parent container’s width */
+	max-width: 800px; /* Prevent it from becoming too wide on large screens */
+	/* background-color: #eef;  <-- Uncomment if you want to see the bounding box for debugging */
+}
+
+/* 
     A sub-container wrapping the image and text, 
     to keep them together and control spacing from the page edges. 
     This is optional, but helps keep them neatly grouped if you want them 
     to appear more "centered" relative to each other.
   */
-  .contentWrapper {
-    display: flex;              /* Row layout for the image + text */
-    align-items: center;        /* Vertically center within this wrapper */
-  }
-  
-  /* 
+.contentWrapper {
+	display: flex; /* Row layout for the image + text */
+	align-items: center; /* Vertically center within this wrapper */
+}
+
+/* 
     Container for the profile image. 
     margin-right: 1rem => space between image and text 
     (switch to margin-left if you later do flex-direction: row-reverse).
   */
-  .imageContainer {
-    margin-right: 1rem;         /* Gap between the image and the text */
-    /* 
+.imageContainer {
+	float: left;
+	margin-right: 1rem; /* Gap between the image and the text */
+	/* 
        By default, .imageContainer is only as wide as needed for its contents.
        No 'flex:...' is required unless you want more advanced layout constraints.
     */
-  }
-  
-  /* 
+}
+
+/* 
     The profile image itself.
     - width: auto or a smaller fixed size ensures it won't dominate the header.
     - You can scale it up or down, or use a max-width.
   */
-  .profileImage {
-    width: 80px;                /* FIXED example: 80px wide. Adjust as you wish (e.g., 60px, 100px, etc.) */
-    height: 80px;               /* Same as width for a perfect circle */
-    border-radius: 50%;         /* Makes the image circular (use 10px if you want just rounded corners) */
-    object-fit: cover;          /* Nicely crops/fits if the img isn't exactly square */
-    display: block;             /* Removes inline spacing issues around the img */
-  }
-  
-  /* 
+.profileImage {
+	width: 80px; /* FIXED example: 80px wide. Adjust as you wish (e.g., 60px, 100px, etc.) */
+	height: 80px; /* Same as width for a perfect circle */
+	border-radius: 50%; /* Makes the image circular (use 10px if you want just rounded corners) */
+	object-fit: cover; /* Nicely crops/fits if the img isn't exactly square */
+	display: block; /* Removes inline spacing issues around the img */
+}
+
+/* 
     Container for the text (name, subtitle, etc.).
     - flex-direction: column => stack multiple text lines (if any).
     - align-items: center => center text horizontally in this container.
   */
-  .textContainer {
-    display: flex;              /* enables flex alignment on text */
-    flex-direction: column;     /* name on top, subtitle below, etc. */
-    align-items: center;        /* horizontally center text in this container */
-    justify-content: center;    /* vertically center if the container gets taller */
-  }
-  
-  /* 
+.textContainer {
+	display: flex; /* enables flex alignment on text */
+	flex-direction: column; /* name on top, subtitle below, etc. */
+	align-items: center; /* horizontally center text in this container */
+	justify-content: center; /* vertically center if the container gets taller */
+	overflow: hidden;
+}
+
+/* 
     The user’s name text.
     margin: 0 => remove default heading margins.
   */
-  .userName {
-    font-size: 1.5rem; 
-    font-weight: bold; 
-    margin: 0; 
-  }
-  
-  /* 
+.userName {
+	margin-bottom: 0;
+}
+
+/* 
     Subtitle or any additional text (optional).
   */
-  .userSubtitle {
-    font-size: 1rem; 
-    color: #666; 
-    margin: 0.25rem 0 0 0; 
-  }
-  
-  /* 
+.userSubtitle {
+	font-size: 1rem;
+	color: #666;
+	margin: 0.25rem 0 0 0;
+}
+
+/* 
     MEDIA QUERIES (Optional):
     If you want the image to scale differently on small screens,
     you can adjust .profileImage width/height here.
   */
-  @media (max-width: 600px) {
-    .profileImage {
-      width: 60px;      /* e.g., shrink to 60px on smaller screens */
-      height: 60px; 
-    }
-  }
-  
+@media (max-width: 600px) {
+	.profileImage {
+		width: 60px; /* e.g., shrink to 60px on smaller screens */
+		height: 60px;
+	}
+}

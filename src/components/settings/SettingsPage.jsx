@@ -1,22 +1,27 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import SettingsSideBar from "../layout/SideBar Files/SettingsSideBar";
+import { Outlet, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function SettingsPage() {
+	const { isLoggedIn } = useContext(AuthContext);
+	const location = useLocation();
+
+	const settingsContent = (
+		<>
+			<h2>The SettingsPage.jsx file is rendered correctly</h2>
+			<p>Now the settings link is in the NavBar works some what</p>
+		</>
+	);
+
 	return (
 		<>
 			<aside className="sidebar">
-				<h2>Settings Sidebar</h2>
-				<p>Sidebar content goes here.</p>
-				This comes from the SettingsPage() function
-				<nav>
-					<button>
-						<NavLink to="/settings/account">Account Settings</NavLink>
-					</button>
-				</nav>
+				<SettingsSideBar />
 			</aside>
-
 			<main className="feed">
-				<h2>The SettingsPage.jsx file is rendered correctly</h2>
-				<p>Now the settings link is in the NavBar works some what</p>
+				{location.pathname === "/settings" && settingsContent}
+				<Outlet />
 			</main>
 		</>
 	);

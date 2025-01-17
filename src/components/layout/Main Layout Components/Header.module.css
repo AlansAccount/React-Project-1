@@ -1,0 +1,23 @@
+/* Example: keep a single row with space between left portion (image + text) and right portion (NavBar). */
+.header.single-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between; /* left portion on the left, NavBar on the right */
+	padding: 1rem;
+	/* border: 1px solid blue;  <-- for debugging */
+}
+
+/* The left portion which can have an image (on Profile) and text. */
+.header-left {
+	display: flex;
+	align-items: center; /* vertically center image + text */
+	gap: 0.5rem; /* space between image and text */
+}
+
+/* For the profile pic. Adjust size as needed. */
+.header-profile-pic {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+}

@@ -48,7 +48,7 @@ body {
 */
 .header {
 	text-align: center;
-	height: 7vw;
+	height: 60px;
 	background-color: #ffffff; /* change this color to style header BG */
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* small shadow (optional) */
 	border-bottom-right-radius: 10px; /* adjust ONLY the BOTTM-RIGHT corner rounding */
@@ -60,7 +60,7 @@ body {
 
 .header h4 {
 	margin-top: 7px;
-	margin-bottom: 12px;;
+	margin-bottom: 12px;
 }
 
 /* 
@@ -144,9 +144,9 @@ body {
 }
 
 .footer h4 {
-    margin-bottom: 10px; /* Adjust the bottom margin of the h4 element */
+	margin-bottom: 10px; /* Adjust the bottom margin of the h4 element */
 }
 
 .footer p {
-    margin-top: 10px; /* Adjust the top margin of the p element */
+	margin-top: 10px; /* Adjust the top margin of the p element */
 }

@@ -1,19 +1,15 @@
 import img from "../../assets/images/images.png";
 import styles from "./ProfileHeader.module.css";
 
-export default function ProfileHeader() {
+export default function ProfileHeader({ name }) {
 	return (
-		<div className={styles.profileHeader}>
-			<div className={styles.imageContainer}>
-				<img
-					src={img}
-					alt="Future Profile Image"
-					className={styles.profileImage}
-				/>
-			</div>
+		<>
+			<aside className={styles.imageContainer}>
+				<img src={img} alt="Future Profile" className={styles.profileImage} />
+			</aside>
 			<div className={styles.textContainer}>
-				<h1 className={styles.userName}>Profile Header</h1>
+				<h4 className={styles.userName}>{name}</h4>
 			</div>
-		</div>
+		</>
 	);
 }

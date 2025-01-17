@@ -1,41 +1,31 @@
-import NavBar from "./components/layout/NavBar";
+import { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext.jsx";
+
+import AuthFormPage from "./pages/AuthForms/AuthFormPage";
+import Header from "./components/layout/Main Layout Components/Header";
+
 import "./App.css";
-import AuthFormPage from "./pages/AuthFormPage";
-import { useState } from "react";
+import Footer from "./components/layout/Main Layout Components/Footer";
 
 export default function App() {
-	const [isloggedIn, setIsLoggedIn] = useState(false);
-
-	function handleLogin() {
-		setIsLoggedIn(!isloggedIn);
-	}
+	const { isLoggedIn } = useContext(AuthContext);
 
 	return (
 		<div className="outer-wrapper">
 			<div className="centered-container">
-				<header className="header">
-					<h4>My Header</h4>
-
-					{isloggedIn ? <NavBar /> : null}
-				</header>
-
+				<Header>{isLoggedIn && "Welcome to My App"}</Header>
 				<div className="main-content">
-					{!isloggedIn ? <AuthFormPage onLogin={handleLogin} /> : <Outlet />}
+					{!isLoggedIn ? (
+						<AuthFormPage />
+					) : (
+						<>
+							<Outlet />
+						</>
+					)}
 				</div>
-
-				<footer className="footer">
-					<h4>My Footer</h4>
-					<p style={{ textAlign: "center", color: "grey" }}>
-						© My First React Frontend Project.
-					</p>
-				</footer>
+				<Footer />
 			</div>
 		</div>
 	);
 }
-
-// {!isAuthenticated ? <LoginPage /> : <Outlet />}
-// <button onClick={tempAuthentication}>
-// 	Login
-// </button>

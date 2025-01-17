@@ -1,17 +1,13 @@
-import SideBar from "../components/layout/SideBar";
+import HomeSideBar from "../components/layout/SideBar Files/HomeSideBar";
 
 export default function HomePage() {
 	return (
 		<>
 			<aside className="sidebar">
-				<h2>Sidebar</h2>
-				<SideBar />
+				<HomeSideBar />
 			</aside>
-
 			<main className="feed">
-				<h2>Feed Area</h2>
-				<p>This is where the feed will go.</p>
-				This comes from the HomePage() function
+				<h4>Main Feed Area</h4>
 			</main>
 		</>
 	);
