@@ -1,8 +1,10 @@
 // NewUser.jsx
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function NewUser() {
+	const navigate = useNavigate();
 	const { updateUserProfile } = useContext(AuthContext);
 
 	// We'll store extra fields in local state
@@ -32,7 +34,7 @@ export default function NewUser() {
 			about: extraData.about,
 		});
 
-		alert("Profile updated in context!");
+		navigate("/");
 	}
 
 	return (
@@ -40,7 +42,19 @@ export default function NewUser() {
 			<h2>Complete Your Profile</h2>
 			<label>
 				Sex:
-				<input name="sex" value={extraData.sex} onChange={handleExtraChange} />
+				<select
+					name="sex"
+					value={extraData.sex}
+					onChange={handleExtraChange}
+					defaultValue=""
+                    required
+				>
+					<option value="" disabled hidden>
+						-- Select an option --
+					</option>
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+				</select>
 			</label>
 			<label>
 				Location:
@@ -48,6 +62,7 @@ export default function NewUser() {
 					name="location"
 					value={extraData.location}
 					onChange={handleExtraChange}
+                    required
 				/>
 			</label>
 			<label>
