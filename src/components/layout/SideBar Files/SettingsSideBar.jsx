@@ -1,7 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import Button from "../../../common/Button";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 export default function SettingsSideBar() {
+	const { logout } = useContext(AuthContext);
 	const location = useLocation();
 
 	return (
@@ -19,6 +22,10 @@ export default function SettingsSideBar() {
 					<Button>General Settings</Button>
 				</NavLink>
 			)}
+
+			<NavLink to="/">
+				<Button onClick={logout}>Log Out</Button>
+			</NavLink>
 		</>
 	);
 }

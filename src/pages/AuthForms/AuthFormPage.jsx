@@ -1,61 +1,79 @@
-import { Form } from "react-router-dom";
-import Button from "../../common/Button";
-import styles from "./AuthFormPage.module.css";
-import loginForm from "./LoginForm";
-import signupForm from "./SignupForm";
-import { useContext, useState } from "react";
+import { Form, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+import Button from "../../common/Button";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import styles from "./AuthFormPage.module.css";
+
 export default function AuthFormPage() {
-	const { loginSignup, handleLogin, handleAuthMode } = useContext(AuthContext);
+  const {
+    loginSignup, 
+    handleAuthMode,
+    handleChange,
+    formData,
+    loginWithEmailPassword,
+    signUpUser
+  } = useContext(AuthContext);
 
-	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		password: "",
-		dateOfBirth: "",
-	});
+  const navigate = useNavigate();
 
-	function handleChange(event) {
-		const { name, value } = event.target;
-		setFormData({ ...setFormData, [name]: value });
-	}
+  function handleSubmit(event) {
+    event.preventDefault();
 
-	function handleSubmit(event) {
-		event.preventDefault();
-		console.log(event.target.value);
+    if (loginSignup) {
+      // Attempt login
+      const result = loginWithEmailPassword(formData.email, formData.password);
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+      console.log("Logged in user:", result.user);
+      // Optionally navigate somewhere, e.g. /profile
+      // navigate("/profile");
+    } else {
+      // Attempt sign-up
+      const result = signUpUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        dateOfBirth: formData.dateOfBirth
+      });
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+      console.log("Signed up user:", result.user);
 
-		console.log(formData);
-		// const name = event.target.name.value;
-		// const email = event.target.email.value;
-		// const password = event.target.password.value;
-		// const dateOfBirth = event.target.dateOfBirth.value;
+      // Two-step flow: navigate to /Auth/complete-registry
+      navigate("/Auth/complete-registry");
+    }
+  }
 
-		if (loginSignup) {
-			console.log("Logging in...");
-			handleLogin(); // Notify App.jsx to update the login state
-		} else {
-			console.log("Signing up...");
-			// Implement signup logic here
-			// signUpUser({ name, dateOfBirth, email, password });
-			handleLogin(); // Simulate login after signup
-		}
-	}
+  return (
+    <div className={styles.authContainer}>
+      <h2 className={styles.authTitle}>
+        {loginSignup ? "Login" : "Signup"}
+      </h2>
 
-	return (
-		<div className={styles.authContainer}>
-			<h2 className={styles.authTitle}>{loginSignup ? "Login" : "Signup"}</h2>
-			<Form className={styles.authForm} onSubmit={handleSubmit}>
-				{loginSignup ? loginForm : signupForm}
-				<div>
-					<Button type="submit">
-						{loginSignup ? "Login" : "Create Account"}
-					</Button>
-				</div>
-			</Form>
-			<Button onClick={handleAuthMode}>
-				{!loginSignup ? "Have an account? Login." : "No account? Sign Up!"}
-			</Button>
-		</div>
-	);
+      <Form className={styles.authForm} onSubmit={handleSubmit}>
+        {loginSignup ? (
+          <LoginForm onChange={handleChange} />
+        ) : (
+          <SignupForm onChange={handleChange} />
+        )}
+        <div>
+          <Button type="submit">
+            {loginSignup ? "Login" : "Create Account"}
+          </Button>
+          <aside style={{ float: "right" }}>
+            <button onClick={handleAuthMode}>
+              {loginSignup ? "Sign Up Here." : "Login Here."}
+            </button>
+          </aside>
+        </div>
+      </Form>
+    </div>
+  );
 }

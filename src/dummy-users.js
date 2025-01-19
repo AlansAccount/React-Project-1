@@ -1,7 +1,8 @@
-export const DUMMY_USERS = [];
-// userDetails: {
-// 			age: "",
-// 			sex: "",
-// 			DOB: "",
-// 			location: "",
-// 		},		profileImage: "",
+// dummy-users.js or context file
+export let DUMMY_USERS = [];
+
+const saved = localStorage.getItem("dummyUsers");
+
+if (saved) {
+    DUMMY_USERS = JSON.parse(saved);
+  }

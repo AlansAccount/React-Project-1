@@ -14,9 +14,6 @@ export default function HomeSideBar() {
 			<NavLink to="/messages">
 				<Button>Messages 📩</Button>
 			</NavLink>
-			<NavLink to="/logout">
-				<Button>Logout ❗</Button>
-			</NavLink>
 		</>
 	);
 }
