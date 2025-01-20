@@ -1,11 +1,12 @@
-import { createContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
 
 export const PostContext = createContext({
 	posts: [],
 	addPost: () => {},
 });
 
-export default function PostContextProvider({ children }) {
+export function PostProvider({ children }) {
 	const [posts, setPosts] = useState([]);
 
 	// We might also want to know who is currently logged in from AuthContext
@@ -13,7 +14,7 @@ export default function PostContextProvider({ children }) {
 		/* something to get userId, if we store userId in localStorage or maybe from a user obj*/
 	} = useContext(AuthContext);
 
-	function addPosts(post) {
+	function addPost(post) {
 		// We find the current user ID from localStorage or from AuthContext
 		const userId = localStorage.getItem("authUserId");
 
@@ -47,13 +48,11 @@ export default function PostContextProvider({ children }) {
 
 	const postsContext = {
 		posts,
-		addPosts,
+		addPost,
 		likePost,
 	};
 
 	return (
-		<ChallengeContext.Provider value={postsContext}>
-			{children}
-		</ChallengeContext.Provider>
+		<PostContext.Provider value={postsContext}>{children}</PostContext.Provider>
 	);
 }

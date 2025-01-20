@@ -38,6 +38,7 @@ body {
 	width: 55%; /* ~80% of viewport width, tweak as needed */
 	max-width: 1200px; /* largest it can get on very wide screens */
 	min-width: 600px; /* smallest it can get before horizontal scrollbar appears (optional) */
+	overflow-y: auto; /* Enable scrolling */
 }
 
 /*
@@ -76,6 +77,7 @@ body {
 	align-items: stretch; /* let children stretch in height */
 	gap: 10px;
 	margin: 10px 0; /* small gap from header + any gap to footer */
+	overflow-y: auto; /* Enable scrolling */
 
 	/* We rely on .centered-container for the width (70%). 
 	   If you want a separate BG color behind sidebar+feed,
@@ -118,6 +120,7 @@ body {
 	border-radius: 10px; /* adjust corner rounding here */
 	padding: 0px 20px 20px 20px; /* internal spacing */
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* small shadow (optional) */
+	overflow-y: auto; /* Enable scrolling */
 
 	/* 
 	  If you want the feed to extend to the bottom even more explicitly,
@@ -149,4 +152,20 @@ body {
 
 .footer p {
 	margin-top: 10px; /* Adjust the top margin of the p element */
+}
+
+.post {
+	border: 1px solid #ddd;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border-radius: 8px;
+	background: #f9f9f9;
+}
+
+.post h3 {
+	margin: 0 0 0.5rem;
+}
+
+.post p {
+	margin: 0.5rem 0;
 }

@@ -3,6 +3,7 @@ import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { PostProvider } from "./context/PostContext";
 
 import HomePage from "./pages/HomePage";
 import App from "./App";
@@ -12,6 +13,7 @@ import ProfilePage from "./components/profile/ProfilePage";
 import AuthLayout from "./pages/AuthForms/AuthLayout";
 import AuthFormPage from "./pages/AuthForms/AuthFormPage";
 import NewUser from "./pages/AuthForms/NewUser";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // Here I want to add routing with createBrowserRouter and have the routes nested here.
 
@@ -47,12 +49,18 @@ const router = createBrowserRouter([
 					},
 				],
 			},
+			{
+				path: "*", // anything that doesn't match the above
+				element: <NotFoundPage />,
+			},
 		],
 	},
 ]);
 
 createRoot(document.getElementById("root")).render(
-		<AuthProvider>
+	<AuthProvider>
+		<PostProvider>
 			<RouterProvider router={router} />
-		</AuthProvider>
+		</PostProvider>
+	</AuthProvider>
 );
