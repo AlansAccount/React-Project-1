@@ -1,18 +1,23 @@
 import { useContext, useRef, useState, useEffect } from "react";
 import { PostContext } from "../../context/PostContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Feed({ userId, myPosts }) {
-	const { posts, likePost } = useContext(PostContext);
+	const { posts, likePost, deletePost } = useContext(PostContext);
+	const { users } = useContext(AuthContext);
 	const [visibleCount, setVisibleCount] = useState(2); // Initial visible posts count
 
 	// Filter posts based on userId or show all posts
-	const displayPosts = userId
-		? posts.filter((p) => p.userId === userId)
-		: posts;
+	const displayPosts = Array.isArray(posts)
+		? userId
+			? posts.filter((p) => p.userId === userId)
+			: posts
+		: [];
 
 	// Ref for the "load more" trigger
 	const loadMoreRef = useRef();
 
+	// This useEffect handles the infinite scrolling.
 	useEffect(() => {
 		// Function to handle observer trigger
 		const handleIntersection = (entries) => {
@@ -22,7 +27,9 @@ export default function Feed({ userId, myPosts }) {
 		};
 
 		// Create IntersectionObserver instance
-		const observer = new IntersectionObserver(handleIntersection, { threshold: 1 });
+		const observer = new IntersectionObserver(handleIntersection, {
+			threshold: 1,
+		});
 
 		// Attach observer to the "load more" element
 		if (loadMoreRef.current) {
@@ -63,6 +70,13 @@ export default function Feed({ userId, myPosts }) {
 						<h3>{p.title}</h3>
 						<p>{p.description}</p>
 						<p>Posted by userId: {p.userId}</p>
+						<button
+							onClick={() => {
+								deletePost(posts.id);
+							}}
+						>
+							Delete Post
+						</button>
 					</div>
 				);
 			})}

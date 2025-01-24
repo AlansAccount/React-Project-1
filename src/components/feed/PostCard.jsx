@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import Button from "../../common/Button";
 import Modal from "./Modal";
 
@@ -6,6 +6,7 @@ import { PostContext } from "../../context/PostContext";
 
 export default function PostCard({ onDone }) {
 	const { addPost } = useContext(PostContext);
+	const [deleteButton, setDeleteButton] = useState(false);
 
 	const titleRef = useRef();
 	const descRef = useRef();
@@ -16,6 +17,7 @@ export default function PostCard({ onDone }) {
 			title: titleRef.current.value,
 			description: descRef.current.value,
 		};
+		setDeleteButton(true);
 
 		addPost(post); // add the new post to the context
 		onDone(); // close modal
@@ -40,6 +42,7 @@ export default function PostCard({ onDone }) {
 						placeholder="Enter your post content here."
 					/>
 				</p>
+				{deleteButton && <button>Delete Post</button>}
 				<div>
 					<Button type="button" onClick={onDone}>
 						Cancel

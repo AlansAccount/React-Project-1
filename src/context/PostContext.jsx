@@ -4,6 +4,7 @@ import { AuthContext } from "./AuthContext";
 export const PostContext = createContext({
 	posts: [],
 	addPost: () => {},
+	deletePost: () => {},
 });
 
 export function PostProvider({ children }) {
@@ -24,6 +25,7 @@ export function PostProvider({ children }) {
 			userId: userId, // associate the post with the logged in user
 			status: "active",
 			createdAt: new Date().toISOString(),
+			likes: 0,
 		};
 		setPosts((prevPosts) => [newPost, ...prevPosts]);
 	}
@@ -31,6 +33,13 @@ export function PostProvider({ children }) {
 		setPosts((prevPosts) =>
 			prevPosts.map((p) => (p.id === postId ? { ...p, likes: p.likes + 1 } : p))
 		);
+	}
+	function deletePost(postId) {
+		setPosts((prevPosts) => {
+			const updatedPosts = prevPosts.filter((p) => p.id !== postId);
+			localStorage.setItem("posts", JSON.stringify(updatedPosts));
+		});
+		return updatedPosts;
 	}
 
 	useEffect(() => {
@@ -50,6 +59,7 @@ export function PostProvider({ children }) {
 		posts,
 		addPost,
 		likePost,
+		deletePost,
 	};
 
 	return (

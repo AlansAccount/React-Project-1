@@ -9,7 +9,7 @@ import styles from "./AuthFormPage.module.css";
 
 export default function AuthFormPage() {
   const {
-    loginSignup, 
+    authMode, 
     handleAuthMode,
     handleChange,
     formData,
@@ -22,7 +22,7 @@ export default function AuthFormPage() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (loginSignup) {
+    if (authMode) {
       // Attempt login
       const result = loginWithEmailPassword(formData.email, formData.password);
       if (!result.success) {
@@ -54,22 +54,22 @@ export default function AuthFormPage() {
   return (
     <div className={styles.authContainer}>
       <h2 className={styles.authTitle}>
-        {loginSignup ? "Login" : "Signup"}
+        {authMode ? "Login" : "Signup"}
       </h2>
 
       <Form className={styles.authForm} onSubmit={handleSubmit}>
-        {loginSignup ? (
+        {authMode ? (
           <LoginForm onChange={handleChange} />
         ) : (
           <SignupForm onChange={handleChange} />
         )}
         <div>
           <Button type="submit">
-            {loginSignup ? "Login" : "Create Account"}
+            {authMode ? "Login" : "Create Account"}
           </Button>
           <aside style={{ float: "right" }}>
             <button onClick={handleAuthMode}>
-              {loginSignup ? "Sign Up Here." : "Login Here."}
+              {authMode ? "Sign Up Here." : "Login Here."}
             </button>
           </aside>
         </div>

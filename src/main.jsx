@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthContextProvider } from "./context/AuthContext";
 import { PostProvider } from "./context/PostContext";
 
 import HomePage from "./pages/HomePage";
@@ -58,9 +58,9 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-	<AuthProvider>
+	<AuthContextProvider>
 		<PostProvider>
 			<RouterProvider router={router} />
 		</PostProvider>
-	</AuthProvider>
+	</AuthContextProvider>
 );
