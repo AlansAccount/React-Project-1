@@ -3,6 +3,7 @@ import styles from "./AuthFormPage.module.css";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function LoginForm({ onChange }) {
+	// You pull 'formData' from context, but also pass onChange from parent
 	const { formData } = useContext(AuthContext);
 
 	return (
@@ -18,9 +19,10 @@ export default function LoginForm({ onChange }) {
 					className={styles.formInput}
 					placeholder="Enter your email."
 					required
-					onChange={onChange}
+					onChange={onChange} // Parent-provided handler
 				/>
 			</div>
+
 			<div className={styles.formGroup}>
 				<label htmlFor="password" className={styles.formLabel}>
 					Password:

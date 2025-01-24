@@ -8,8 +8,9 @@ import SignupForm from "./SignupForm";
 import styles from "./AuthFormPage.module.css";
 
 export default function AuthFormPage() {
+  // 1) Extract many values from AuthContext
   const {
-    authMode, 
+    authMode,
     handleAuthMode,
     handleChange,
     formData,
@@ -23,17 +24,16 @@ export default function AuthFormPage() {
     event.preventDefault();
 
     if (authMode) {
-      // Attempt login
+      // 2) If authMode is true, user is trying to login
       const result = loginWithEmailPassword(formData.email, formData.password);
       if (!result.success) {
         alert(result.message);
         return;
       }
-      console.log("Logged in user:", result.user);
-      // Optionally navigate somewhere, e.g. /profile
+      // Optionally navigate to a certain page after login
       // navigate("/profile");
     } else {
-      // Attempt sign-up
+      // 3) If authMode is false, user is trying to sign up
       const result = signUpUser({
         name: formData.name,
         email: formData.email,
@@ -44,9 +44,7 @@ export default function AuthFormPage() {
         alert(result.message);
         return;
       }
-      console.log("Signed up user:", result.user);
-
-      // Two-step flow: navigate to /Auth/complete-registry
+      // For the two-step flow, go to next step (complete-registry)
       navigate("/Auth/complete-registry");
     }
   }
@@ -57,6 +55,7 @@ export default function AuthFormPage() {
         {authMode ? "Login" : "Signup"}
       </h2>
 
+      {/* 4) We use a <Form> from react-router-dom, but a regular <form> would also work */}
       <Form className={styles.authForm} onSubmit={handleSubmit}>
         {authMode ? (
           <LoginForm onChange={handleChange} />

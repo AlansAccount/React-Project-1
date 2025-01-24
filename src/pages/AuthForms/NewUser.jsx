@@ -1,4 +1,3 @@
-// NewUser.jsx
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ export default function NewUser() {
 	const navigate = useNavigate();
 	const { updateUserProfile } = useContext(AuthContext);
 
-	// We'll store extra fields in local state
+	// 1) Additional form fields to complete profile
 	const [extraData, setExtraData] = useState({
 		sex: "",
 		location: "",
@@ -20,20 +19,21 @@ export default function NewUser() {
 	}
 
 	function handleSave() {
-		// 1) get the userId from localStorage
+		// 2) Get userId from localStorage (the ID of the currently logged-in user)
 		const userId = localStorage.getItem("authUserId");
 		if (!userId) {
 			alert("No user found. Are you logged in?");
 			return;
 		}
 
-		// 2) call updateUserProfile in context
+		// 3) Update user with extra fields in context
 		updateUserProfile(parseInt(userId, 10), {
 			sex: extraData.sex,
 			location: extraData.location,
 			about: extraData.about,
 		});
 
+		// 4) Navigate user to the homepage (or anywhere else you want)
 		navigate("/");
 	}
 
@@ -47,7 +47,7 @@ export default function NewUser() {
 					value={extraData.sex}
 					onChange={handleExtraChange}
 					defaultValue=""
-                    required
+					required
 				>
 					<option value="" disabled hidden>
 						-- Select an option --
@@ -56,15 +56,17 @@ export default function NewUser() {
 					<option value="female">Female</option>
 				</select>
 			</label>
+
 			<label>
 				Location:
 				<input
 					name="location"
 					value={extraData.location}
 					onChange={handleExtraChange}
-                    required
+					required
 				/>
 			</label>
+
 			<label>
 				About:
 				<textarea
@@ -73,6 +75,7 @@ export default function NewUser() {
 					onChange={handleExtraChange}
 				/>
 			</label>
+
 			<button onClick={handleSave}>Save Profile</button>
 		</div>
 	);

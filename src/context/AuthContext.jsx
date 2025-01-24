@@ -1,21 +1,22 @@
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({
-	atuhMode: true,
+	authMode: true,
 	users: [],
+	// ... default placeholders
 });
 
 export function AuthContextProvider({ children }) {
-	// (A) Whether user is logged in
+	// (A) Track login status
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	// (B) Whether form is "login" (true) or "signup" (false)
+	// (B) authMode = login (true) or signup (false)
 	const [authMode, setAuthMode] = useState(true);
 
-	// (C) Our in-memory "database" of users
+	// (C) Our simple in-memory user "database"
 	const [users, setUsers] = useState([]);
 
-	// (D) The form data user is currently typing in the login/signup forms
+	// (D) The form data while user types in login/signup fields
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -23,17 +24,18 @@ export function AuthContextProvider({ children }) {
 		dateOfBirth: "",
 	});
 
-	// Toggle between login & signup
+	// Toggle between login and signup
 	function handleAuthMode() {
 		setAuthMode((prev) => !prev);
 	}
 
-	// The function that updates the typed fields
+	// Update typed fields for login/signup
 	function handleChange(event) {
 		const { name, value } = event.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	}
 
+	// Attempt login
 	function loginWithEmailPassword(email, password) {
 		const foundUser = users.find(
 			(u) => u.email === email && u.password === password
@@ -43,30 +45,28 @@ export function AuthContextProvider({ children }) {
 			return { success: false, message: "Invalid email or password" };
 		}
 
-		// If found, generate a token
+		// Generate a token
 		const token =
 			Math.random().toString(36).substring(2) + Date.now().toString(36);
 
-		// Save token + userId in localStorage
+		// Store in localStorage
 		localStorage.setItem("authToken", token);
 		localStorage.setItem("authUserId", foundUser.id);
 
-		// Mark isLoggedIn = true
+		// Mark as logged in
 		setIsLoggedIn(true);
 
 		return { success: true, user: foundUser };
 	}
 
-	/**
-	 * Sign up a new user with the data from formData
-	 */
+	// Sign up new user
 	function signUpUser({ name, email, password, dateOfBirth }) {
 		const existing = users.find((u) => u.email === email);
 		if (existing) {
 			return { success: false, message: "Email is already taken." };
 		}
 
-		// Create new user
+		// Create the new user
 		const newUser = {
 			id: users.length + 1,
 			name,
@@ -75,10 +75,10 @@ export function AuthContextProvider({ children }) {
 			dateOfBirth,
 		};
 
-		// Add to array
+		// Add them to the array
 		setUsers((prev) => [...prev, newUser]);
 
-		// Generate token + store in localStorage
+		// Generate a token
 		const token =
 			Math.random().toString(36).substring(2) + Date.now().toString(36);
 		localStorage.setItem("authToken", token);
@@ -88,9 +88,7 @@ export function AuthContextProvider({ children }) {
 		return { success: true, user: newUser };
 	}
 
-	/**
-	 * Update user with extra fields (like from NewUser step-2 form)
-	 */
+	// Update user with extra fields (e.g., from the NewUser form)
 	function updateUserProfile(userId, extraFields) {
 		setUsers((prevUsers) => {
 			return prevUsers.map((u) => {
@@ -102,16 +100,14 @@ export function AuthContextProvider({ children }) {
 		});
 	}
 
-	/**
-	 * Basic logout
-	 */
+	// Basic logout
 	function logout() {
 		localStorage.removeItem("authToken");
 		localStorage.removeItem("authUserId");
 		setIsLoggedIn(false);
 	}
 
-	// On mount, check if there's a token
+	// On component mount, check for token in localStorage
 	useEffect(() => {
 		const token = localStorage.getItem("authToken");
 		const userId = localStorage.getItem("authUserId");
@@ -120,7 +116,7 @@ export function AuthContextProvider({ children }) {
 		}
 	}, []);
 
-	// The context value
+	// Context value
 	const value = {
 		isLoggedIn,
 		authMode,
