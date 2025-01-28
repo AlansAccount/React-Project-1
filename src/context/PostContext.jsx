@@ -1,149 +1,158 @@
+/**
+ * frontend/src/context/PostContext.jsx
+ *
+ * Manages fetching, creating, and interacting with posts.
+ */
 import { createContext, useState, useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
-export const PostContext = createContext({
-	posts: [],
-	addPost: () => {},
-	deletePost: () => {},
-});
+export const PostContext = createContext();
 
 export function PostProvider({ children }) {
-	const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const { currentUser } = useContext(AuthContext);
 
-	// Potential usage of auth context if we want to do something with user data
-	const {} = useContext(AuthContext);
+  // On mount, fetch all posts from backend
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-	// 1) Add a post, associating it with the logged-in user's ID
-	function addPost(post) {
-		const userId = localStorage.getItem("authUserId");
-		const newPost = {
-			...post,
-			id: Math.random().toString(36).substring(2),
-			userId: userId, // associate with user
-			status: "active",
-			createdAt: new Date().toISOString(),
-			likes: 0,
-			dislikes: 0,
-			comments: [], // new field
-		};
-		setPosts((prevPosts) => [newPost, ...prevPosts]);
-	}
+  function fetchPosts() {
+    fetch("http://localhost:4000/api/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data); // array of posts
+      })
+      .catch((err) => console.error("Error fetching posts:", err));
+  }
 
-	// 2) Increase the like count
+  async function addPost({ title, description }) {
+    if (!currentUser) return;
+    try {
+      const bodyObj = {
+        userId: currentUser.id,
+        title,
+        description,
+      };
+      const res = await fetch("http://localhost:4000/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyObj),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPosts((prev) => [data.post, ...prev]);
+      }
+    } catch (err) {
+      console.error("addPost error:", err);
+    }
+  }
 
-	function likePost(postId) {
-		setPosts((prevPosts) =>
-			prevPosts.map((p) => (p.id === postId ? { ...p, likes: p.likes + 1 } : p))
-		);
-	}
+  async function likePost(postId) {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(`http://localhost:4000/api/posts/${postId}/like`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorUserId: currentUser.id }),
+      });
+      if (res.ok) {
+        // increment likes locally
+        setPosts((prev) =>
+          prev.map((p) => (p.id === postId ? { ...p, likes: p.likes + 1 } : p))
+        );
+      }
+    } catch (err) {
+      console.error("likePost error:", err);
+    }
+  }
 
-	function dislikePost(postId) {
-		setPosts((prevPosts) =>
-			prevPosts.map((p) =>
-				p.id === postId ? { ...p, dislikes: p.dislikes + 1 } : p
-			)
-		);
-	}
+  async function dislikePost(postId) {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/posts/${postId}/dislike`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ actorUserId: currentUser.id }),
+        }
+      );
+      if (res.ok) {
+        setPosts((prev) =>
+          prev.map((p) =>
+            p.id === postId ? { ...p, dislikes: p.dislikes + 1 } : p
+          )
+        );
+      }
+    } catch (err) {
+      console.error("dislikePost error:", err);
+    }
+  }
 
-	function addComment(postId, commentText) {
-		const currentUserId = localStorage.getItem("authUserId");
+  async function addComment(postId, commentText) {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/posts/${postId}/comments`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: currentUser.id, text: commentText }),
+        }
+      );
+      if (res.ok) {
+        // re-fetch or manually update state
+        fetchPosts();
+      }
+    } catch (err) {
+      console.error("addComment error:", err);
+    }
+  }
 
-		setPosts((prevPosts) => {
-			return prevPosts.map((post) => {
-				if (post.id === postId) {
-					const newComment = {
-						commentId: Math.random().toString(36).substring(2),
-						userId: currentUserId,
-						text: commentText,
-						likes: 0,
-						dislikes: 0,
-						replies: [],
-					};
-					return {
-						...posts,
-						commnets: [...post.comment, newComment],
-					};
-				}
-				return post;
-			});
-		});
-	}
+  async function replyToComment(postId, commentId, replyText) {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/posts/${postId}/comments/${commentId}/replies`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: currentUser.id, text: replyText }),
+        }
+      );
+      if (res.ok) {
+        fetchPosts();
+      }
+    } catch (err) {
+      console.error("replyToComment error:", err);
+    }
+  }
 
-	function replyToComment(postId, commentId, replyText) {
-		const currentUserId = localStorage.getItem("authUserId");
+  function deletePost(postId) {
+    // optional: also remove from server
+    fetch(`http://localhost:4000/api/posts/${postId}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        setPosts((prev) => prev.filter((p) => p.id !== postId));
+      }
+    });
+  }
 
-		setPosts((prevPosts) => {
-			return prevPosts.map((post) => {
-				if (post.id !== postId) return post;
-				const updatedComments = post.comments.map((c) => {
-					if (c.commentId !== commentId) return c;
-					const newReply = {
-						replyId: Math.random().toString(36).substring(2),
-						userId: currentUserId,
-						text: replyText,
-						likes: 0,
-					};
-					return {
-						...c,
-						replies: [...c.replies, newReply],
-					};
-				});
-
-				return { ...post, comment: updatedComments };
-			});
-		});
-	}
-
-	// 	// 2) Increase reaactions count
-	// 	function updateReaction(postId, reactionType) {
-	// 	setPosts((prevPosts) =>
-	// 		prevPosts.map((p) =>
-	// 			p.id === postId
-	// 				? {
-	// 						...p,
-	// 						reactions: {
-	// 							...p.reactions,
-	// 							[reactionType]: (p.reactions[reactionType] || 0) + 1,
-	// 						},
-	// 				  }
-	// 				: p
-	// 		)
-	// 	);
-	// }
-
-	// 3) Delete a post
-	function deletePost(postId) {
-		setPosts((prevPosts) => {
-			const updatedPosts = prevPosts.filter((p) => p.id !== postId);
-			localStorage.setItem("posts", JSON.stringify(updatedPosts));
-			return updatedPosts;
-		});
-	}
-
-	// 4) Load posts from localStorage on mount
-	useEffect(() => {
-		const savedPosts = localStorage.getItem("posts");
-		if (savedPosts) {
-			setPosts(JSON.parse(savedPosts));
-		}
-	}, []);
-
-	// 5) Save posts to localStorage whenever they change
-	useEffect(() => {
-		localStorage.setItem("posts", JSON.stringify(posts));
-	}, [posts]);
-
-	const postsContext = {
-		posts,
-		addPost,
-		likePost,
-		dislikePost,
-		deletePost,
-		addComment, // new
-		replyToComment, // new
-	};
-
-	return (
-		<PostContext.Provider value={postsContext}>{children}</PostContext.Provider>
-	);
+  return (
+    <PostContext.Provider
+      value={{
+        posts,
+        addPost,
+        likePost,
+        dislikePost,
+        addComment,
+        replyToComment,
+        deletePost,
+      }}
+    >
+      {children}
+    </PostContext.Provider>
+  );
 }

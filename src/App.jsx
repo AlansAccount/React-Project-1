@@ -1,34 +1,41 @@
+/**
+ * frontend/src/App.jsx
+ *
+ * A top-level component that may hold a layout or routes (if not using separate router).
+ */
 import { useContext } from "react";
-import { Outlet } from "react-router-dom";
-import { AuthContext } from "./context/AuthContext.jsx";
-
-import AuthFormPage from "./pages/AuthForms/AuthFormPage";
-import Header from "./components/layout/Main Layout Components/Header";
-
-import "./App.css";
-import Footer from "./components/layout/Main Layout Components/Footer";
+import { Outlet, Link } from "react-router-dom"; // if using react-router
+import { AuthContext } from "./context/AuthContext";
 
 export default function App() {
-	// 1) Use context to see if the user is logged in
-	const { isLoggedIn } = useContext(AuthContext);
+	const { isLoggedIn, currentUser, logout } = useContext(AuthContext);
 
 	return (
-		<div className="outer-wrapper">
-			<div className="centered-container">
-				{/* 2) Show header with a welcome message if user is logged in */}
-				<Header>{isLoggedIn && "Welcome to My App"}</Header>
-
-				{/* 3) The main content area */}
-				<div className="main-content">
-					{
-						// 4) If the user is not logged in, show AuthFormPage directly.
-						//    Otherwise, render the child routes via <Outlet />
-						!isLoggedIn ? <AuthFormPage /> : <Outlet />
-					}
-				</div>
-
-				<Footer />
-			</div>
+		<div>
+			<header style={{ background: "#ccc", padding: "1rem" }}>
+				<h1>My Social Media Clone</h1>
+				{isLoggedIn && currentUser ? (
+					<>
+						<p>Welcome, {currentUser.name}!</p>
+						<nav>
+							<Link to="/">Home</Link> | <Link to="/profile">Profile</Link> |{" "}
+							<button onClick={logout}>Logout</button>
+						</nav>
+					</>
+				) : (
+					<nav>
+						<Link to="/login">Login</Link> | <Link to="/signup">Signup</Link>
+					</nav>
+				)}
+			</header>
+			<main style={{ padding: "1rem" }}>
+				<Outlet />
+			</main>
+			<footer
+				style={{ background: "#ddd", padding: "1rem", marginTop: "2rem" }}
+			>
+				<p>Footer stuff here</p>
+			</footer>
 		</div>
 	);
 }

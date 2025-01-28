@@ -1,72 +1,38 @@
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
+/**
+ * frontend/src/main.jsx
+ *
+ * Renders the React app, sets up routing, and wraps with our contexts.
+ */
+import React from "react";
+import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import App from "./App";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./components/profile/ProfilePage";
+
 import { AuthContextProvider } from "./context/AuthContext";
 import { PostProvider } from "./context/PostContext";
+import { ChatProvider } from "./context/MessagingContext";
 
-import HomePage from "./pages/HomePage";
-import App from "./App";
-import SettingsPage from "./components/settings/SettingsPage";
-import AccountSettingsForm from "./components/settings/AccountSettingsForm";
-import ProfilePage from "./components/profile/ProfilePage";
-import AuthLayout from "./pages/AuthForms/AuthLayout";
-import AuthFormPage from "./pages/AuthForms/AuthFormPage";
-import NewUser from "./pages/AuthForms/NewUser";
-import NotFoundPage from "./pages/NotFoundPage";
-
-// 1) Create a router with all the route definitions and nested routes.
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />, // The top-level layout
+		element: <App />,
 		children: [
-			{
-				index: true, // '/' route
-				element: <HomePage />,
-			},
-			{
-				path: "/profile",
-				element: <ProfilePage />,
-			},
-			{
-				path: "/settings",
-				element: <SettingsPage />,
-				children: [
-					{
-						path: "account",
-						element: <AccountSettingsForm />,
-					},
-				],
-			},
-			{
-				path: "/Auth",
-				element: <AuthLayout />, // A layout for Auth routes
-				children: [
-					{
-						index: true, // '/Auth' route
-						element: <AuthFormPage />,
-					},
-					{
-						path: "complete-registry",
-						element: <NewUser />,
-					},
-				],
-			},
-			{
-				path: "*", // Catch-all route for 404s
-				element: <NotFoundPage />,
-			},
+			{ index: true, element: <HomePage /> },
+			{ path: "profile", element: <ProfilePage /> },
+			// possibly: { path: "chat", element: <ChatPage /> },
 		],
 	},
 ]);
 
-// 2) Render the app, wrapping with AuthContextProvider and PostProvider so that
-//    all children have access to auth/post state and functions.
-createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
 	<AuthContextProvider>
 		<PostProvider>
-			<RouterProvider router={router} />
+			<ChatProvider>
+				<RouterProvider router={router} />
+			</ChatProvider>
 		</PostProvider>
 	</AuthContextProvider>
 );
